@@ -3,7 +3,6 @@
 #import tmdb
 import re
 import os
-import os.path
 
 def processFile(f,options):
 	"""Return the guessed name of a movie file"""
@@ -38,11 +37,6 @@ def processFile(f,options):
 	
 	print "Processing %s" % f
 
-	l = len(extension)
-	if (l != 3 and l != 4):
-		print "fail"
-		return None
-
 	# grab the date incase we fail to look it up later
 	date = re.findall(r'((20|19)[0-9]{2})',filename)
 	if len(date) > 1:
@@ -56,10 +50,8 @@ def processFile(f,options):
 
 	filename = filename.title()
 
-	print filename
 
 
-	print ""
 	#print tmdb.search(filename)
 
 	return True
