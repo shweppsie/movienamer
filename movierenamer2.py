@@ -7,11 +7,22 @@ import os
 def processFile(f,options):
 	"""Return the guessed name of a movie file"""
 
-	for i in xrange(len(extensions)):
-		if f.endswith(extensions[i]):
+	if not os.path.exists(f):
+		print 'Error: File does not exist: "%s"' %f 
+		return
+	elif not os.path.isfile(f):
+		print 'Warning: Not a File: "%s", ignoring' % f
+		return
+
+	extensions = ['avi']
+	found = False
+	for i in extensions:
+		if f.endswith(i):
+			found = True
 			break
-		elif i == len(extensions):
-			return None
+	if not found:
+		print 'Warning: Unknown extension: "%s", ignoring' %f
+		return
 	
 	extensions = []
 
