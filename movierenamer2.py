@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import tmdb
+#import tmdb
 import re
 import os
 import os.path
@@ -22,17 +22,19 @@ def processFile(f,options):
 	basename = basename.lower()
 
 	filename, extension = basename.rsplit('.',1)
-	extensions.append(extension)
-	
-	if os.path.exists(filename+'.idx'):
-		extensions.append('idx')
-	if os.path.exists(filename+'.sub'):
-		extensions.append('sub')
-	if os.path.exists(filename+'.srt'):
-		extensions.append('srt')
 
-	if len(extensions) > 1:
-		"Found extra files to rename (subtitles)"
+	#TODO: rename files with the same name
+	#extensions.append(extension)
+	#
+	#if os.path.exists(filename+'.idx'):
+	#	extensions.append('idx')
+	#if os.path.exists(filename+'.sub'):
+	#	extensions.append('sub')
+	#if os.path.exists(filename+'.srt'):
+	#	extensions.append('srt')
+	#
+	#if len(extensions) > 1:
+	#	"Found extra files to rename (subtitles)"
 	
 	print "Processing %s" % f
 
@@ -47,8 +49,8 @@ def processFile(f,options):
 		print "Found %d possible dates" % len(date)
 
 	# remove rubbish from the filename
-	for i in blacklist:
-		filename = filename.replace(i,' ')
+	#for i in blacklist:
+	#	filename = filename.replace(i,' ')
 	filename = filename.strip()
 	filename = re.sub(' +',' ',filename)
 
@@ -56,9 +58,9 @@ def processFile(f,options):
 
 	print filename
 
-	print tmdb.search(filename)
 
 	print ""
+	#print tmdb.search(filename)
 
 	return True
 
