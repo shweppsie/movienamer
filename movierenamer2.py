@@ -130,7 +130,7 @@ def main():
 	args = parser.parse_args()
 
 	for f in args.Files:
-		process(f)
+		processFile(f,args)
 
 if __name__ == "__main__":
 	main()
