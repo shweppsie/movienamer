@@ -50,8 +50,6 @@ def processFile(f,options):
 
 	# grab the date incase we fail to look it up later
 	date = re.findall(r'((20|19)[0-9]{2})',filename)
-	if len(date) > 1:
-		print "Found %d possible dates" % len(date)
 
 	# remove rubbish from the filename
 	#for i in blacklist:
@@ -62,6 +60,8 @@ def processFile(f,options):
 	filename = filename.title()
 
 
+	if len(date) > 1:
+		print "Found %d possible dates" % len(date)
 
 	#print tmdb.search(filename)
 
