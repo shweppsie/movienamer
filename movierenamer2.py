@@ -82,20 +82,20 @@ def configurator():
 	items that are lists will be appended repeatedly for every
 	item in the list.
 	"""
-	config.set("naming_scheme","%(name)s (%(year)s)")
-	
+	config.set('movierenamer2','naming_scheme',"%(name)s (%(year)s)")
+
 	"""
 	stuff to store if found in the original filename
 	these should be in match/append pairs (i.e. dvdrip/DVDRip )
 	the match is not case sensitive
 	"""
-	config.set("keeplist","")
+	config.set('movierenamer2','keeplist','')
 	
 	"""
 	remove from filenames before analysis to make guesses more
 	reliable
 	"""
-	config.set("blacklist","dvdscr,xvid,sample,.,-,(,),[,]")
+	config.set('movierenamer2','blacklist','dvdscr,xvid,sample,.,-,(,),[,]')
 
 	config.read([os.path.expanduser("~/.movierenamer2rc")])
 
