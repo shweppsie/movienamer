@@ -57,11 +57,15 @@ def processFile(f,options):
 	filename = filename.strip()
 	filename = re.sub(' +',' ',filename)
 
-	filename = filename.title()
+	#FIXME: temporary hack
+	filename = re.sub(r'\[.*','',filename)
 
+	filename = filename.title()
 
 	if len(date) > 1:
 		print "Found %d possible dates" % len(date)
+	else:
+		print 'mv "%s" "/stuff/shared/videos/movies/other/%s (%s).%s"' % (f, filename, date[0][0], extension)
 
 	#print tmdb.search(filename)
 
