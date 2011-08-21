@@ -107,24 +107,27 @@ def main():
 	import argparse
 	parser = argparse.ArgumentParser(description='Correctly Name Movie files')
 	parser.add_argument(
-			'--naming_scheme',
-			default=config.get("movierenamer2","naming_scheme")
-			help="Specify the output name scheme"
+			'-n','--noact',
+			help="Show what would happen, but make no changes",
+			)
 	parser.add_argument(
-			'--naming_scheme_help',
-			dest='naming_scheme_help',
-			default=False
-			help="Print out all the possibilities for naming_scheme"
+			'--naming_scheme',
+			default=config.get("movierenamer2","naming_scheme"),
+			help="Specify the output name scheme"
+			)
 	parser.add_argument(
 			'--keeplist',
 			dest='keeplist',
-			default=config.get("movierenamer2","keeplist")
-			help="List of strings to keep in the name"
-	parser.add_argument('File',metavar='FILE',nargs='+',help="Files to rename")
+			default=config.get("movierenamer2","keeplist"),
+			help="List of strings to keep in the name",
+			)
+	parser.add_argument(
+			'Files',
+			metavar='FILE',
+			nargs='+',
+			help="Files to rename",
+			)
 	args = parser.parse_args()
-
-	if args.naming_scheme_help:
-		print "Help stuffs"
 
 	for f in args.Files:
 		process(f)
