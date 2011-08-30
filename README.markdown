@@ -1,8 +1,8 @@
 # MovieRenamer2 #
 
-Media Center File Browser
-
 (c) 2010 GNU GPL v3
+
+Author: Nathan Overall
 
 This is a rewrite of MovieRenamer after it became too unwieldy to work with 
 anymore. I will slowly Migrate features from MovieRenamer into MovieRenamer2
