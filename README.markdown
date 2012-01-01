@@ -1,7 +1,5 @@
 # MovieRenamer2 #
 
-Media Center File Browser
-
 (c) 2010-current GNU GPL v3
 
 This is a rewrite of MovieRenamer after it became too unwieldy to work with 
@@ -10,8 +8,8 @@ and also include various enhancements.
 
 # Installation #
 MovieRenamer2 requires Python and themoviedb to run.
-Get themoviedb from [here](https://github.com/doganaydin/themoviedb) 
-then run
+Install themoviedb from [here](https://github.com/doganaydin/themoviedb).
+Then run
 
 	./movierenamer2 --help
 
