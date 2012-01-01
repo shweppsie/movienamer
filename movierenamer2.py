@@ -68,6 +68,14 @@ def get_date(old_name):
 		print "Can't find release date in filename! Use --search-year to provide it"
 		return None
 
+def splitter(word, separators):
+	word = [word]
+	for s in separators:
+		res = []
+		for i in range(len(word)):
+			res.extend(word[i].split(s))
+		word = res
+	return word
 
 def processFile(f,options):
 	"""Return the guessed name of a movie file"""
