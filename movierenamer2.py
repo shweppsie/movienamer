@@ -3,6 +3,23 @@
 #import tmdb
 import re
 import os
+def search(term):
+	global searches
+	attempts = 3
+	backoff = 5
+
+	if term in searches:
+		res = searches[term]
+	else:
+		for i in xrange(attempts):
+			try:
+				res = tmdb.search(term)
+				searches[term] = res
+				return res
+			except tmdb.TmdXmlError, e:
+				print "Error, retrying in %d seconds..." % backoff
+				time.sleep(backoff)
+
 
 def processFile(f,options):
 	"""Return the guessed name of a movie file"""
