@@ -5,6 +5,11 @@ import re,pickle
 
 import tmdb
 
+GREEN='\033[1;32m'
+RED='\033[1;33m'
+WHITE='\033[1;37m'
+RESET='\033[1;m'
+
 searches = {}
 
 def search(term):
