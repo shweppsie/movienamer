@@ -126,6 +126,12 @@ def main():
 	parser.add_argument(
 			'-n','--noact',
 			help="Show what would happen, but make no changes",
+			action='store_true',
+			)
+	parser.add_argument(
+			'-r','--recursive',
+			help="Search for files recursively",
+			action='store_true',
 			)
 	parser.add_argument(
 			'--naming_scheme',
@@ -146,8 +152,19 @@ def main():
 			)
 	args = parser.parse_args()
 
-	for f in args.Files:
-		processFile(f,args)
+
+	try:
+		files = args.Files
+		if args.recursive:
+			for f in files:
+				if os.path.isdir(f):
+					for i in os.walk(f):
+						for j in i[2]:
+							processFile(os.path.join(i[0],j),args)
+		else:
+			for f in files:
+				print f
+				processFile(f,args)
 
 if __name__ == "__main__":
 	main()
