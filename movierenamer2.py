@@ -166,6 +166,10 @@ def main():
 			action='store_true',
 			)
 	parser.add_argument(
+			'--search-year',
+			dest='search_year',
+			action='store',
+			help="Year to use when searching for result",
 			)
 	parser.add_argument(
 			'Files',
@@ -175,6 +179,9 @@ def main():
 			)
 	args = parser.parse_args()
 
+	if args.recursive and args.year:
+		print "Do not use --year and --recursive"
+		exit(2)
 
 	if os.path.exists(os.path.expanduser('~/.movierenamer.cache')):
 		searches = pickle.load(open(os.path.expanduser('~/.movierenamer.cache'),'r'))
