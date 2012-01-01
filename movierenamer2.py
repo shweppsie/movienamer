@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 #import tmdb
-import re
 import os
+import re,pickle
+
+searches = {}
+
 def search(term):
 	global searches
 	attempts = 3
@@ -119,6 +122,8 @@ def configurator():
 	return config
 
 def main():
+	global searches
+
 	config = configurator()
 
 	import argparse
@@ -153,6 +158,8 @@ def main():
 	args = parser.parse_args()
 
 
+	if os.path.exists(os.path.expanduser('~/.movierenamer.cache')):
+		searches = pickle.load(open(os.path.expanduser('~/.movierenamer.cache'),'r'))
 	try:
 		files = args.Files
 		if args.recursive:
@@ -165,6 +172,13 @@ def main():
 			for f in files:
 				print f
 				processFile(f,args)
+	except KeyboardInterrupt, e:
+		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
+		raise
+	except Exception, e:
+		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
+		raise
+	pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
 
 if __name__ == "__main__":
 	main()
