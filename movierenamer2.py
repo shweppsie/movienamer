@@ -149,63 +149,22 @@ def processFile(f,options):
 
 	return True
 
-def configurator():
-	import ConfigParser
-	config = ConfigParser.RawConfigParser()
 
-	config.add_section('movierenamer2')
 
-	"""
-	a comma separated list of data to be included in the name
-	items that are lists will be appended repeatedly for every
-	item in the list.
-	"""
-	config.set('movierenamer2','naming_scheme',"%(name)s (%(year)s)")
 
-	"""
-	stuff to store if found in the original filename
-	these should be in match/append pairs (i.e. dvdrip/DVDRip )
-	the match is not case sensitive
-	"""
-	config.set('movierenamer2','keeplist','')
-	
-	"""
-	remove from filenames before analysis to make guesses more
-	reliable
-	"""
-	config.set('movierenamer2','blacklist','dvdscr,xvid,sample,.,-,(,),[,]')
-
-	config.read([os.path.expanduser("~/.movierenamer2rc")])
-
-	return config
 
 def main():
 	global searches
 
-	config = configurator()
 
 	import argparse
 	parser = argparse.ArgumentParser(description='Correctly Name Movie files')
-	parser.add_argument(
-			'-n','--noact',
-			help="Show what would happen, but make no changes",
-			action='store_true',
-			)
 	parser.add_argument(
 			'-r','--recursive',
 			help="Search for files recursively",
 			action='store_true',
 			)
 	parser.add_argument(
-			'--naming_scheme',
-			default=config.get("movierenamer2","naming_scheme"),
-			help="Specify the output name scheme"
-			)
-	parser.add_argument(
-			'--keeplist',
-			dest='keeplist',
-			default=config.get("movierenamer2","keeplist"),
-			help="List of strings to keep in the name",
 			)
 	parser.add_argument(
 			'Files',
