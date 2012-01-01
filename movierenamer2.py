@@ -78,6 +78,9 @@ def splitter(word, separators):
 	return word
 
 def processFile(f,options):
+	sys.stdout.write(WHITE)
+	opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg']
+
 	"""Return the guessed name of a movie file"""
 
 	if not os.path.exists(f):
@@ -87,39 +90,37 @@ def processFile(f,options):
 		print 'Warning: Not a File: "%s", ignoring' % f
 		return
 
-	extensions = ['avi']
+	extensions = []
+
+	f = f.decode('utf-8')
+
+	directory = os.path.dirname(f)
+	basename = os.path.basename(f)
+
+	print "Processing %s..." % basename.encode("UTF-8")
+
+	old_name, extension = os.path.splitext(basename)
+
 	found = False
-	for i in extensions:
-		if f.endswith(i):
+	for i in opt_extensions:
+		if extension.lower() == '.'+i.lower():
 			found = True
 			break
 	if not found:
 		print 'Warning: Unknown extension: "%s", ignoring' %f
 		return
+
+	extensions.append(extension)
 	
-	extensions = []
-
-	directory = os.path.dirname(f)
-	basename = os.path.basename(f)
-
-	basename = basename.lower()
-
-	filename, extension = basename.rsplit('.',1)
-
-	#TODO: rename files with the same name
-	#extensions.append(extension)
-	#
-	#if os.path.exists(filename+'.idx'):
-	#	extensions.append('idx')
-	#if os.path.exists(filename+'.sub'):
-	#	extensions.append('sub')
-	#if os.path.exists(filename+'.srt'):
-	#	extensions.append('srt')
-	#
-	#if len(extensions) > 1:
-	#	"Found extra files to rename (subtitles)"
-	
-	print "Processing %s" % f
+	if os.path.exists(os.path.join(directory,old_name+'.idx')):
+		print "Found extra files to rename: '%s.idx'" % (old_name)
+		extensions.append('.idx')
+	if os.path.exists(os.path.join(directory,old_name+'.sub')):
+		print "Found extra files to rename: '%s.sub'" % (old_name)
+		extensions.append('.sub')
+	if os.path.exists(os.path.join(directory,old_name+'.srt')):
+		print "Found extra files to rename: '%s.srt'" % (old_name)
+		extensions.append('.srt')
 
 	clean_name = gen_clean_name(old_name)
 	if options.search_year:
@@ -130,28 +131,85 @@ def processFile(f,options):
 	if date != None:
 		date_name = "%s %s" % (clean_name, date)
 
+	resA = []
+	resB = []
+	results = []
+	
+	# fetch results
+	resA = search(clean_name)
+	if date_name != None:
+		resB = search(date_name)
 
-	# remove rubbish from the filename
-	#for i in blacklist:
-	#	filename = filename.replace(i,' ')
-	filename = filename.strip()
-	filename = re.sub(' +',' ',filename)
+	# join the results list together removing dups
+	results.extend(resA)
+	for b in resB:
+		fail=False
+		for res in results:
+			if b['id'] == res['id']:
+				fail=True
+		if not fail:
+			results.append(b)
 
-	#FIXME: temporary hack
-	filename = re.sub(r'\[.*','',filename)
+	# bail if we have no results
+	if len(results) < 1:
+		print "%sNo Results for %s!%s" % (RED,old_name,WHITE)
+		return
 
-	filename = filename.title()
+	# finish if the original name matches a result perfectly
+	for res in results:
+		if build_name(res) == old_name:
+			return
 
+	suggestions = []
+	for res in results:
+		if 'released' in res and res['released'] != None:
+			if res['released'][:4] == date:
+				suggestions.append(res)
+
+	if len(suggestions) < 1:
+		suggestions = results
+	if len(suggestions) == 1:
+		name = suggestions[0]
+		rename(directory,old_name,build_name(suggestions[0]),extensions)
+		return
+
+	for i in xrange(len(results)):
+		res = results[i]
+		print "%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i, res['name'], res['released'][:4], res['id'])
+	answer = raw_input("Result? [0-9*]:")
+	if re.match('[0-9]*',answer):
+		res = results[int(answer)]
+		rename(directory,old_name,build_name(res),extensions)
+
+
+def build_name(result):
+	newname = result['name']
+	if 'released' in result and result['released'] != None:
+		year = result['released'][0:4]
+		name = "%s (%s)" % (newname, year)
 	else:
-		print 'mv "%s" "/stuff/shared/videos/movies/other/%s (%s).%s"' % (f, filename, date[0][0], extension)
+		name = "%s" % (newname)
 
-	#print tmdb.search(filename)
+	return name
 
-	return True
+def rename(directory,old_name, newname, extensions):
+	newname = re.sub(':',',',newname)
 
+	if old_name == newname:
+		return
 
+	for i in extensions:
+		print "%sRenaming '%s%s' -> '%s%s'" % (GREEN,old_name,i,newname,i.lower())
 
-
+	answer = raw_input("Rename? [Y/y]:")
+	if answer.lower() == "y":
+		for i in extensions:
+			os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
+			sys.stdout.write(RESET)
+		return True
+	print "Skipping renaming"
+	sys.stdout.write(RESET)
+	return False
 
 def main():
 	global searches
