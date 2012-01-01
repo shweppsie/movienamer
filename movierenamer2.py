@@ -53,6 +53,21 @@ def gen_clean_name(name):
 
 	return name
 
+def get_date(old_name):
+	date = re.findall(r'((20|19)[0-9]{2})',old_name)
+
+	# found more than one date
+	if len(date) > 1:
+		print "Found %d possible dates: %s" % (len(date), ' '.join([i[0] for i in date]))
+		print "Using %s with search. Use --search-year to override." % date[len(date)-1][0]
+
+	if len(date) > 0:
+		date = date[len(date)-1][0]
+		return date
+	else:
+		print "Can't find release date in filename! Use --search-year to provide it"
+		return None
+
 
 def processFile(f,options):
 	"""Return the guessed name of a movie file"""
@@ -98,8 +113,15 @@ def processFile(f,options):
 	
 	print "Processing %s" % f
 
-	# grab the date incase we fail to look it up later
-	date = re.findall(r'((20|19)[0-9]{2})',filename)
+	clean_name = gen_clean_name(old_name)
+	if options.search_year:
+		date = options.search_year
+		print "Using specified date: %s" % date
+	else:
+		date = get_date(old_name)
+	if date != None:
+		date_name = "%s %s" % (clean_name, date)
+
 
 	# remove rubbish from the filename
 	#for i in blacklist:
@@ -112,8 +134,6 @@ def processFile(f,options):
 
 	filename = filename.title()
 
-	if len(date) > 1:
-		print "Found %d possible dates" % len(date)
 	else:
 		print 'mv "%s" "/stuff/shared/videos/movies/other/%s (%s).%s"' % (f, filename, date[0][0], extension)
 
