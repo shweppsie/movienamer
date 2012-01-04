@@ -104,7 +104,7 @@ def processFile(f,options):
 
 	found = False
 	for i in opt_extensions:
-		if extension.lower() == '.'+i.lower():
+		if extension.lower() == '.'+i.replace('.','').lower():
 			found = True
 			break
 	if not found:
