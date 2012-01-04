@@ -269,7 +269,7 @@ def main():
 	except Exception, e:
 		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
 		raise
-	pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
+	pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'w'))
 
 if __name__ == "__main__":
 	main()
