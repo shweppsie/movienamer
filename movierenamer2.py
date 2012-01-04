@@ -176,8 +176,11 @@ def processFile(f,options):
 
 	for i in xrange(len(results)):
 		res = results[i]
-		print "%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i, res['name'], res['released'][:4], res['id'])
-	answer = raw_input("Result? [0-9*]:")
+		if 'released' in res and res['released'] != None:
+			print "%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i, res['name'], res['released'][:4], res['id'])
+		else:
+			print "%d - %s http://www.themoviedb.org/movie/%s" % (i, res['name'], res['id'])
+	answer = raw_input("Result? [0-9]*:")
 	if re.match('[0-9]*',answer):
 		res = results[int(answer)]
 		rename(directory,old_name,build_name(res),extensions)
