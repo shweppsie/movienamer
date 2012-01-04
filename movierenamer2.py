@@ -188,6 +188,11 @@ def processFile(f,options):
 
 def build_name(result):
 	newname = result['name']
+
+	# remove chars windows can't handle
+	newname = newname.replace(':',',')
+	newname = newname.replace('?','')
+
 	if 'released' in result and result['released'] != None:
 		year = result['released'][0:4]
 		name = "%s (%s)" % (newname, year)
@@ -197,7 +202,6 @@ def build_name(result):
 	return name
 
 def rename(directory,old_name, newname, extensions):
-	newname = re.sub(':',',',newname)
 
 	if old_name == newname:
 		return
