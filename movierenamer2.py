@@ -19,6 +19,7 @@ def search(term):
 
 	if term in searches:
 		res = searches[term]
+		return res
 	else:
 		for i in xrange(attempts):
 			try:
