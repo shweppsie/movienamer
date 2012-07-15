@@ -187,10 +187,8 @@ def rename(directory,old_name, newname, extensions):
 	if answer == "y":
 		for i in extensions:
 			os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
-			sys.stdout.write(RESET)
 		return True
 	print "Skipping renaming"
-	sys.stdout.write(RESET)
 	return False
 
 def main():
