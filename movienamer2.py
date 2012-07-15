@@ -112,8 +112,10 @@ def processFile(f,options):
 
 	f = f.decode('utf-8')
 
-	directory = os.path.dirname(f)
 	basename = os.path.basename(f)
+	directory = os.path.dirname(f)
+	if directory == '':
+		directory = '.'
 
 	print "\nProcessing %s..." % basename.encode("UTF-8")
 
