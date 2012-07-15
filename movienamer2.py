@@ -8,19 +8,20 @@ import tmdb
 
 searches = {}
 
-def p(text, color=None):
+def p(text, colour=None):
 	colours = {
 		'green':'32',
-		'red'='33',
-		'white'='37',
+		'red':'33',
+		'white':'37',
 	}
 	if colour != None:
-		print '\033[1;%sm' % (colours[colour])
-		print text
-		print '\033[1;m'
+		sys.stdout.write('\033[1;%sm' % (colours[colour]))
+		sys.stdout.write(text)
+		sys.stdout.write('\033[1;m')
 	else:
-		print '\033[1;m'
-		print text
+		sys.stdout.write('\033[1;m')
+		sys.stdout.write(text)
+	sys.stdout.write('\n')
 
 def search(term):
 	global searches
