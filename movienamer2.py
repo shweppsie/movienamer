@@ -162,10 +162,15 @@ def processFile(f,options):
 		print 'Searching for "%s" ' % (clean_name)
 	results = search(clean_name,year)
 
-	# bail if we have no results
 	if len(results) < 1:
-		p("No Results for %s!" % (old_name), 'red')
-		return
+		# no results, retry search without year
+		if year != None:
+			print 'Searching again without year'
+			results = search(clean_name)
+		# no results
+		if len(results) < 1:
+			p("No Results for %s!" % (old_name), 'red')
+			return
 
 	if old_name == build_name(results[0]['title'],results[0]['release_date'][:4]):
 		p('First result matches current name, skipping renaming','green')
