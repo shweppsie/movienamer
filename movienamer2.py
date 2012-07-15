@@ -32,14 +32,19 @@ def search(movie, year=None):
 	attempts = 3
 	backoff = 5
 
-	if movie in searches:
-		res = searches[movie]
+	if year == None:
+		index = movie
+	else:
+		index = movie+year
+	if index in searches:
+		res = searches[index]
+		print 'Using cached result'
 		return res
 	else:
 		for i in xrange(attempts):
 			try:
 				res = tmdb.search(movie,year)
-				searches[movie] = res
+				searches[index] = res
 				return res
 			except Exception, e:
 				raise
