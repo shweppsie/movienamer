@@ -143,11 +143,8 @@ def processFile(f,options):
 		p("No Results for %s!" % (old_name), 'red')
 		return
 
-	# finish if the original name matches a result perfectly
-	for res in results:
-		if build_name(res) == old_name:
-			return
-
+	if old_name == build_name(results[0]['title'],results[0]['release_date'][:4]):
+		p('First result matches current name, skipping renaming','green')
 		return
 
 	for i in xrange(len(results)):
