@@ -135,24 +135,8 @@ def processFile(f,options):
 	if year == None:
 		print "Can't find release date in filename! Use --search-year to provide it"
 
-	resA = []
-	resB = []
-	results = []
-	
 	# fetch results
-	resA = search(clean_name)
-	if date_name != None:
-		resB = search(date_name)
-
-	# join the results list together removing dups
-	results.extend(resA)
-	for b in resB:
-		fail=False
-		for res in results:
-			if b['id'] == res['id']:
-				fail=True
-		if not fail:
-			results.append(b)
+	results = search(clean_name,year)
 
 	# bail if we have no results
 	if len(results) < 1:
