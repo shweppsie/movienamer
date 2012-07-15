@@ -94,10 +94,10 @@ def processFile(f,options):
 	"""Return the guessed name of a movie file"""
 
 	if not os.path.exists(f):
-		print 'Error: File does not exist: "%s"' %f 
+		print '\nError: File does not exist: "%s"' %f
 		return
 	elif not os.path.isfile(f):
-		print 'Warning: Not a File: "%s", ignoring' % f
+		print '\nWarning: Not a File: "%s", ignoring' % f
 		return
 
 	extensions = []
@@ -107,7 +107,7 @@ def processFile(f,options):
 	directory = os.path.dirname(f)
 	basename = os.path.basename(f)
 
-	print "Processing %s..." % basename.encode("UTF-8")
+	print "\nProcessing %s..." % basename.encode("UTF-8")
 
 	old_name, extension = os.path.splitext(basename)
 
