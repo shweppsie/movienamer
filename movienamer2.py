@@ -248,8 +248,8 @@ def main():
 		print "Do not use --year and --recursive"
 		exit(2)
 
-	if os.path.exists(os.path.expanduser('~/.movierenamer.cache')):
-		searches = pickle.load(open(os.path.expanduser('~/.movierenamer.cache'),'r'))
+	if os.path.exists(os.path.expanduser('~/.movienamer.cache')):
+		searches = pickle.load(open(os.path.expanduser('~/.movienamer.cache'),'r'))
 	try:
 		files = args.Files
 		if args.recursive:
@@ -264,9 +264,9 @@ def main():
 	except KeyboardInterrupt, e:
 		pass
 	except Exception, e:
-		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'w'))
+		pickle.dump(searches, open(os.path.expanduser('~/.movienamer.cache'),'w'))
 		raise
-	pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'w'))
+	pickle.dump(searches, open(os.path.expanduser('~/.movienamer.cache'),'w'))
 
 if __name__ == "__main__":
 	main()
