@@ -173,10 +173,11 @@ def build_name(name, year):
 def rename(directory,old_name, newname, extensions):
 
 	if old_name == newname:
+		p('New and old names match. No renaming required','green')
 		return
 
 	for i in extensions:
-		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower(), 'green')
+		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower()), 'green')
 
 	answer = raw_input("Rename? [Y/y]:")
 	if answer.lower() == "y":
