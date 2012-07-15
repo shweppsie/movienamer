@@ -156,6 +156,10 @@ def processFile(f,options):
 	clean_name = gen_clean_name(clean_name)
 
 	# fetch results
+	if year != None:
+		print 'Searching for "%s" with year %s' % (clean_name, year)
+	else:
+		print 'Searching for "%s" ' % (clean_name)
 	results = search(clean_name,year)
 
 	# bail if we have no results
