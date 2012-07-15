@@ -52,7 +52,7 @@ def search(movie, year=None):
 def gen_clean_name(name):
 	name = name.lower()
 
-	blacklist = ['720p','bluray','x264','dvdrip']
+	blacklist = ['720p','bluray','x264','dvdrip','LiMiTED','HDRip']
 	for i in blacklist:
 		if i.lower() in name:
 			name = name.partition(i)[0]
