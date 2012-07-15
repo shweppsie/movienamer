@@ -68,16 +68,15 @@ def gen_clean_name(name):
 def get_date(old_name):
 	date = re.findall(r'((20|19)[0-9]{2})',old_name)
 
-	# found more than one date
-	if len(date) > 1:
-		print "Found %d possible dates: %s" % (len(date), ' '.join([i[0] for i in date]))
-		print "Using %s with search. Use --search-year to override." % date[len(date)-1][0]
-
-	if len(date) > 0:
-		date = date[len(date)-1][0]
-		return date
+	dates = []
+	if len(date) == 1:
+		return date[0][0]
+	elif len(date) > 1:
+		for i in date:
+			dates.append[0]
+		print dates
+		return dates
 	else:
-		print "Can't find release date in filename! Use --search-year to provide it"
 		return None
 
 def splitter(word, separators):
@@ -136,12 +135,15 @@ def processFile(f,options):
 
 	clean_name = gen_clean_name(old_name)
 	if options.search_year:
-		date = options.search_year
-		print "Using specified date: %s" % date
+		year = options.search_year
+		print "Using specified date: %s" % year
 	else:
-		date = get_date(old_name)
-	if date != None:
-		date_name = "%s %s" % (clean_name, date)
+		year = get_date(old_name)
+		if type(year) == []:
+			print "Found multiple dates in filename! Use --search-year to provide the correct one"
+			return
+	if year == None:
+		print "Can't find release date in filename! Use --search-year to provide it"
 
 	resA = []
 	resB = []
