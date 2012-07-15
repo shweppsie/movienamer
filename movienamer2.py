@@ -233,10 +233,9 @@ def main():
 			for f in files:
 				processFile(f,args)
 	except KeyboardInterrupt, e:
-		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
-		raise
+		pass
 	except Exception, e:
-		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
+		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'w'))
 		raise
 	pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'w'))
 
