@@ -231,7 +231,6 @@ def main():
 							processFile(os.path.join(i[0],j),args)
 		else:
 			for f in files:
-				print f
 				processFile(f,args)
 	except KeyboardInterrupt, e:
 		pickle.dump(searches, open(os.path.expanduser('~/.movierenamer.cache'),'r+'))
