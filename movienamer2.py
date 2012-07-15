@@ -23,23 +23,22 @@ def p(text, colour=None):
 		sys.stdout.write(text)
 	sys.stdout.write('\n')
 
-def search(term):
+def search(movie, year=None):
 	global searches
 	attempts = 3
 	backoff = 5
 
-	if term in searches:
-		res = searches[term]
+	if movie in searches:
+		res = searches[movie]
 		return res
 	else:
 		for i in xrange(attempts):
 			try:
-				res = tmdb.search(term)
-				searches[term] = res
+				res = tmdb.search(movie,year)
+				searches[movie] = res
 				return res
-			except tmdb.TmdXmlError, e:
-				print "Error, retrying in %d seconds..." % backoff
-				time.sleep(backoff)
+			except Exception, e:
+				raise
 
 def gen_clean_name(name):
 	# remove stuff after the first square bracket
