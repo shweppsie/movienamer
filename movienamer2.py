@@ -117,13 +117,13 @@ def processFile(f,options):
 	if directory == '':
 		directory = '.'
 
-	print "\nProcessing %s..." % basename.encode("UTF-8")
+	print '\nProcessing %s...' % basename.encode("UTF-8")
 
 	old_name, extension = os.path.splitext(basename)
 
 	ext = extension[1:]
 	if ext.lower() not in opt_extensions:
-		print 'Warning: Unknown extension: "%s", ignoring' %f
+		print 'Warning: Unknown extension "%s", ignoring' %f
 		return
 
 	extensions = []
@@ -132,7 +132,7 @@ def processFile(f,options):
 		(name, ext) = os.path.splitext(i)
 		if name == old_name and ext != extension:
 			if(os.path.isfile(os.path.join(directory, i))):
-				print "Found extra file to rename: '%s'" % (i)
+				print 'Found extra file to rename "%s"' % (i)
 				extensions.append(extension)
 
 	clean_name = gen_clean_name(old_name)
