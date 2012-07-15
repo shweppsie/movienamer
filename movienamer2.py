@@ -104,10 +104,10 @@ def processFile(f,options):
 	"""Return the guessed name of a movie file"""
 
 	if not os.path.exists(f):
-		print '\nError: File does not exist: "%s"' %f
+		p('\nError: File does not exist "%s"' %f,'red')
 		return
 	elif not os.path.isfile(f):
-		print '\nWarning: Not a File: "%s", ignoring' % f
+		p('\nWarning: Not a File "%s", ignoring' % f,'red')
 		return
 
 	f = f.decode('utf-8')
@@ -167,7 +167,7 @@ def processFile(f,options):
 	if re.match('[1-9][0-9]*',answer):
 		res = results[int(answer)-1]
 		if not ('release_date' in res):
-			p('No release year for %s' % res['name'],'red')
+			p('No release year for %s' % res['name'],'yellow')
 			return
 		rename(directory,old_name,build_name(res['title'],res['release_date'][:4]),extensions)
 
