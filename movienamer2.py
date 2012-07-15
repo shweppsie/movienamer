@@ -5,12 +5,22 @@ import re,pickle
 
 import tmdb
 
-GREEN='\033[1;32m'
-RED='\033[1;33m'
-WHITE='\033[1;37m'
-RESET='\033[1;m'
 
 searches = {}
+
+def p(text, color=None):
+	colours = {
+		'green':'32',
+		'red'='33',
+		'white'='37',
+	}
+	if colour != None:
+		print '\033[1;%sm' % (colours[colour])
+		print text
+		print '\033[1;m'
+	else:
+		print '\033[1;m'
+		print text
 
 def search(term):
 	global searches
@@ -153,7 +163,7 @@ def processFile(f,options):
 
 	# bail if we have no results
 	if len(results) < 1:
-		print "%sNo Results for %s!%s" % (RED,old_name,WHITE)
+		p("No Results for %s!" % (old_name), 'red')
 		return
 
 	# finish if the original name matches a result perfectly
@@ -207,7 +217,7 @@ def rename(directory,old_name, newname, extensions):
 		return
 
 	for i in extensions:
-		print "%sRenaming '%s%s' -> '%s%s'" % (GREEN,old_name,i,newname,i.lower())
+		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower(), 'green')
 
 	answer = raw_input("Rename? [Y/y]:")
 	if answer.lower() == "y":
