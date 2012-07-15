@@ -41,23 +41,17 @@ def search(term):
 				time.sleep(backoff)
 
 def gen_clean_name(name):
-	opt_blacklist = ['dvdrip']
-
-	# remove rubbish from the filename
-	#TODO: find lowercase and uppercase copies of
-	#      items in the blacklist
-	for i in opt_blacklist:
-		name = name.replace(i,' ')
-
-	#FIXME: temporary hack
+	# remove stuff after the first square bracket
 	name = re.sub(r'\[.*','',name)
 	name = splitter(name, ['(','[','www.'])[0]
 
 	# remove junk characters
 	name = re.sub('[\.\,]+',' ',name)
+
 	# only remove a dash if there is whitespace on
 	# at least one side of it
 	name = re.sub('( -|- )',' ',name)
+
 	# tidy up dulpicate spaces
 	name = re.sub(' +',' ',name)
 	name = name.strip()
