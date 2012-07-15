@@ -10,8 +10,12 @@ searches = {}
 
 def p(text, colour=None):
 	colours = {
+		'red':'31',
+		'aqua':'36',
+		'pink':'35',
+		'blue':'34',
 		'green':'32',
-		'red':'33',
+		'yellow':'33',
 		'white':'37',
 	}
 	if colour != None:
