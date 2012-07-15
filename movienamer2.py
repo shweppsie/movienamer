@@ -137,7 +137,8 @@ def processFile(f,options):
 				print 'Found extra file to rename "%s"' % (i)
 				extensions.append(extension)
 
-	clean_name = gen_clean_name(old_name)
+	# take a copy of the original name
+	clean_name = old_name
 
 	# deal with release year
 	if options.search_year:
@@ -148,8 +149,11 @@ def processFile(f,options):
 		if type(year) == []:
 			print "Found multiple dates in filename! Use --search-year to provide the correct one"
 			return
+		clean_name = clean_name.replace(year,'')
 	if year == None:
 		print "Can't find release date in filename! Use --search-year to provide it"
+
+	clean_name = gen_clean_name(clean_name)
 
 	# fetch results
 	results = search(clean_name,year)
