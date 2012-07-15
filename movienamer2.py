@@ -41,6 +41,13 @@ def search(movie, year=None):
 				raise
 
 def gen_clean_name(name):
+	name = name.lower()
+
+	blacklist = ['720p','bluray','x264','dvdrip']
+	for i in blacklist:
+		if i.lower() in name:
+			name = name.partition(i)[0]
+
 	# remove stuff after the first square bracket
 	name = re.sub(r'\[.*','',name)
 	name = splitter(name, ['(','[','www.'])[0]
