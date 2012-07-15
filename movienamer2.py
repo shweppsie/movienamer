@@ -194,8 +194,6 @@ def rename(directory,old_name, newname, extensions):
 def main():
 	global searches
 
-	tmdb.configure('3e7807c4a01f18298f64662b257d7059')
-
 	import argparse
 	parser = argparse.ArgumentParser(description='Correctly Name Movie files')
 	parser.add_argument(
