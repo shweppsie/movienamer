@@ -148,33 +148,21 @@ def processFile(f,options):
 		if build_name(res) == old_name:
 			return
 
-	suggestions = []
-	for res in results:
-		if 'released' in res and res['released'] != None:
-			if res['released'][:4] == date:
-				suggestions.append(res)
-
-	if len(suggestions) < 1:
-		suggestions = results
-	if len(suggestions) == 1:
-		name = suggestions[0]
-		rename(directory,old_name,build_name(suggestions[0]),extensions)
 		return
 
 	for i in xrange(len(results)):
 		res = results[i]
-		if 'released' in res and res['released'] != None:
-			print "%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i, res['name'], res['released'][:4], res['id'])
+		if 'release_date' in res and res['release_date'] != None:
+			print "\t%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i+1, res['title'], res['release_date'][:4], res['id'])
 		else:
-			print "%d - %s http://www.themoviedb.org/movie/%s" % (i, res['name'], res['id'])
-	answer = raw_input("Result? [0-9]*:")
-	if re.match('[0-9]*',answer):
-		res = results[int(answer)]
-		rename(directory,old_name,build_name(res),extensions)
-
-
-def build_name(result):
-	newname = result['name']
+			print "\t%d - %s http://www.themoviedb.org/movie/%s" % (i+1, res['title'], res['id'])
+	answer = raw_input("Result?: ")
+	if re.match('[1-9][0-9]*',answer):
+		res = results[int(answer)-1]
+		if not ('release_date' in res):
+			p('No release year for %s' % res['name'],'red')
+			return
+		rename(directory,old_name,build_name(res['title'],res['release_date'][:4]),extensions)
 
 	# remove chars windows can't handle
 	newname = newname.replace(':',',')
