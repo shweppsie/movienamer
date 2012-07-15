@@ -121,11 +121,13 @@ def processFile(f,options):
 
 	old_name, extension = os.path.splitext(basename)
 
+	# only process files known video extensions
 	ext = extension[1:]
 	if ext.lower() not in opt_extensions:
 		print 'Warning: Unknown extension "%s", ignoring' %f
 		return
 
+	# process any extra files
 	extensions = []
 	extensions.append(extension)
 	for i in os.listdir(directory):
@@ -136,6 +138,8 @@ def processFile(f,options):
 				extensions.append(extension)
 
 	clean_name = gen_clean_name(old_name)
+
+	# deal with release year
 	if options.search_year:
 		year = options.search_year
 		print "Using specified date: %s" % year
