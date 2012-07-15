@@ -100,8 +100,6 @@ def processFile(f,options):
 		print '\nWarning: Not a File: "%s", ignoring' % f
 		return
 
-	extensions = []
-
 	f = f.decode('utf-8')
 
 	directory = os.path.dirname(f)
@@ -111,26 +109,19 @@ def processFile(f,options):
 
 	old_name, extension = os.path.splitext(basename)
 
-	found = False
-	for i in opt_extensions:
-		if extension.lower() == '.'+i.replace('.','').lower():
-			found = True
-			break
-	if not found:
+	ext = extension[1:]
+	if ext.lower() not in opt_extensions:
 		print 'Warning: Unknown extension: "%s", ignoring' %f
 		return
 
+	extensions = []
 	extensions.append(extension)
-	
-	if os.path.exists(os.path.join(directory,old_name+'.idx')):
-		print "Found extra files to rename: '%s.idx'" % (old_name)
-		extensions.append('.idx')
-	if os.path.exists(os.path.join(directory,old_name+'.sub')):
-		print "Found extra files to rename: '%s.sub'" % (old_name)
-		extensions.append('.sub')
-	if os.path.exists(os.path.join(directory,old_name+'.srt')):
-		print "Found extra files to rename: '%s.srt'" % (old_name)
-		extensions.append('.srt')
+	for i in os.listdir(directory):
+		(name, ext) = os.path.splitext(i)
+		if name == old_name and ext != extension:
+			if(os.path.isfile(os.path.join(directory, i))):
+				print "Found extra file to rename: '%s'" % (i)
+				extensions.append(extension)
 
 	clean_name = gen_clean_name(old_name)
 	if options.search_year:
