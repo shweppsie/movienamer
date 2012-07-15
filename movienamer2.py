@@ -54,7 +54,8 @@ def gen_clean_name(name):
 
 	blacklist = ['720p','bluray','x264','dvdrip','LiMiTED','HDRip']
 	for i in blacklist:
-		if i.lower() in name:
+		i = i.lower()
+		if i in name:
 			name = name.partition(i)[0]
 
 	# remove stuff after the first square bracket
