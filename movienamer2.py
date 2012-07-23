@@ -211,17 +211,8 @@ def rename(directory,old_name, newname, extensions):
 	for i in extensions:
 		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower()), 'green')
 
-	while True:
-		answer = raw_input("Rename? [y/n]: ")
-		if answer == 'y' or answer == 'n':
-			break
-
-	if answer == "y":
-		for i in extensions:
-			os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
-		return True
-	p('Renaming Cancelled!', 'green')
-	return False
+	for i in extensions:
+		os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
 
 def main():
 	global searches
