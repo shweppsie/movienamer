@@ -43,6 +43,7 @@ def search(movie, year=None):
 	else:
 		for i in xrange(attempts):
 			try:
+				movie = movie.encode('utf-8')
 				res = tmdb.search(movie,year)
 				searches[index] = res
 				return res
