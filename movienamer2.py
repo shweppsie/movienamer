@@ -117,7 +117,7 @@ def processFile(f,options):
 	if directory == '':
 		directory = '.'
 
-	print '\nProcessing %s...' % basename.encode("UTF-8")
+	p('\nProcessing %s...' % basename)
 
 	old_name, extension = os.path.splitext(basename)
 	old_name = old_name.encode('utf-8')
@@ -125,7 +125,7 @@ def processFile(f,options):
 	# only process files known video extensions
 	ext = extension[1:]
 	if ext.lower() not in opt_extensions:
-		print 'Warning: Unknown extension "%s", ignoring' %f
+		p('Warning: Unknown extension "%s", ignoring' %f,'yellow')
 		return
 
 	# process any extra files
@@ -148,7 +148,7 @@ def processFile(f,options):
 	else:
 		year = get_date(old_name)
 		if type(year) == []:
-			print "Found multiple dates in filename! Use --search-year to provide the correct one"
+			p("Error: Found multiple dates in filename! Use --search-year to provide the correct one", 'red')
 			return
 	if year == None:
 		print "Can't find release date in filename! Use --search-year to provide it"
