@@ -131,11 +131,17 @@ def processFile(f,options):
 	extensions = []
 	extensions.append(extension)
 	for i in os.listdir(directory):
-		(name, ext) = os.path.splitext(i)
-		if name == old_name and ext != extension:
-			if(os.path.isfile(os.path.join(directory, i))):
-				print 'Found extra file to rename "%s"' % (i)
-				extensions.append(extension)
+		# ensure this isn't the file we're renaming
+		if basename != i:
+			(name, ext) = os.path.splitext(i)
+			ext = ext[1:]
+			if name == old_name:
+				if ext in opt_extensions:
+					p('Error: multiple video files named "%s"!' % name, 'red')
+					return
+				else:
+					p('Found extra file to rename "%s"' % (i))
+					extensions.append(extension)
 
 	# take a copy of the original name
 	clean_name = old_name
