@@ -119,6 +119,22 @@ def prepare_name(name):
 
 	return name
 
+def rename(directory,old_name, newname, extensions):
+
+	if old_name == newname:
+		p('New and old names match. No renaming required','green')
+		return
+
+	for i in extensions:
+		filename = newname+i.lower()
+		if os.path.exists(os.path.join(directory, filename)):
+			p('Error: Rename will overwrite file "%s"!' % filename, 'red')
+			return
+
+	for i in extensions:
+		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower()), 'green')
+		os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
+
 def processFile(f,options):
 	opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
 
@@ -227,18 +243,6 @@ def build_name(name, year):
 	name = "%s (%s)" % (name, year)
 
 	return name
-
-def rename(directory,old_name, newname, extensions):
-
-	if old_name == newname:
-		p('New and old names match. No renaming required','green')
-		return
-
-	for i in extensions:
-		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower()), 'green')
-
-	for i in extensions:
-		os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
 
 def main():
 	global searches
