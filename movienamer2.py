@@ -84,8 +84,7 @@ def get_date(old_name):
 		return date[0][0]
 	elif len(date) > 1:
 		for i in date:
-			dates.append[0]
-		print dates
+			dates.append(i)
 		return dates
 	else:
 		return None
