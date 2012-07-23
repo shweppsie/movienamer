@@ -107,7 +107,7 @@ def processFile(f,options):
 		p('\nError: File does not exist "%s"' %f,'red')
 		return
 	elif not os.path.isfile(f):
-		p('\nWarning: Not a File "%s", ignoring' % f,'red')
+		p('\nError: Not a File "%s", ignoring' % f,'red')
 		return
 
 	f = f.decode('utf-8')
