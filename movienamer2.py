@@ -264,7 +264,7 @@ def main():
 			)
 	args = parser.parse_args()
 
-	if args.recursive and args.year:
+	if args.recursive and args.search_year:
 		print "Do not use --year and --recursive"
 		exit(2)
 
