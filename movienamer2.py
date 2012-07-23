@@ -120,6 +120,7 @@ def processFile(f,options):
 	print '\nProcessing %s...' % basename.encode("UTF-8")
 
 	old_name, extension = os.path.splitext(basename)
+	old_name = old_name.encode('utf-8')
 
 	# only process files known video extensions
 	ext = extension[1:]
