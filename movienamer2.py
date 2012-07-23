@@ -152,7 +152,7 @@ def processFile(f,options):
 		print "Using specified date: %s" % year
 	else:
 		year = get_date(old_name)
-		if type(year) == []:
+		if type(year) == type([]):
 			p("Error: Found multiple dates in filename! Use --search-year to provide the correct one", 'red')
 			return
 	if year == None:
