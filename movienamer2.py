@@ -99,7 +99,7 @@ def splitter(word, separators):
 	return word
 
 def processFile(f,options):
-	opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','.iso']
+	opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
 
 	"""Return the guessed name of a movie file"""
 
