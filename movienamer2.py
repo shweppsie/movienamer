@@ -150,9 +150,11 @@ def processFile(f,options):
 		if type(year) == []:
 			print "Found multiple dates in filename! Use --search-year to provide the correct one"
 			return
-		clean_name = clean_name.replace(year,'')
 	if year == None:
 		print "Can't find release date in filename! Use --search-year to provide it"
+	else:
+		# remove year from name for searching purposes
+		clean_name = clean_name.replace(year,'')
 
 	clean_name = gen_clean_name(clean_name)
 
