@@ -276,7 +276,7 @@ def main():
 			for f in files:
 				if os.path.isdir(f):
 					for i in os.walk(f):
-						for j in i[2]:
+						for j in sorted(i[2]):
 							processFile(os.path.join(i[0],j),args)
 		else:
 			for f in files:
