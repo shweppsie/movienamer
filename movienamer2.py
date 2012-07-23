@@ -175,6 +175,7 @@ def processFile(f,options):
 	extensions = []
 	extensions.append(extension)
 	for i in os.listdir(directory):
+		i = unicode(i,'utf-8')
 		# ensure this isn't the file we're renaming
 		if basename != i:
 			(name, ext) = os.path.splitext(i)
