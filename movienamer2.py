@@ -110,7 +110,7 @@ def processFile(f,options):
 		p('\nError: Not a File "%s", ignoring' % f,'red')
 		return
 
-	f = f.decode('utf-8')
+	f = unicode(f,'utf-8')
 
 	basename = os.path.basename(f)
 	directory = os.path.dirname(f)
