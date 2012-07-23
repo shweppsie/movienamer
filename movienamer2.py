@@ -98,6 +98,13 @@ def splitter(word, separators):
 		word = res
 	return word
 
+def build_name(name, year):
+	name = prepare_name(name)
+
+	name = "%s (%s)" % (name, year)
+
+	return name
+
 # remove chars from names the OSs can't handle
 def prepare_name(name):
 	# Windows: / ? < > \ : * | " ^
@@ -217,7 +224,7 @@ def processFile(f,options):
 			p("No Results for %s!" % (old_name), 'red')
 			return
 
-	if old_name == build_name(results[0]['title'],results[0]['release_date'][:4]):
+	if prepare_name(old_name) == build_name(results[0]['title'],results[0]['release_date'][:4]):
 		p('First result matches current name, skipping renaming','green')
 		return
 
@@ -234,15 +241,6 @@ def processFile(f,options):
 			p('No release year for %s' % res['name'],'yellow')
 			return
 		rename(directory,old_name,build_name(res['title'],res['release_date'][:4]),extensions)
-
-def build_name(name, year):
-	# remove chars windows can't handle
-	name = name.replace(':',',')
-	name = name.replace('?','')
-
-	name = "%s (%s)" % (name, year)
-
-	return name
 
 def main():
 	global searches
