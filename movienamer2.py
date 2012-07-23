@@ -64,7 +64,7 @@ def gen_clean_name(name):
 	name = splitter(name, ['(','[','www.'])[0]
 
 	# remove junk characters
-	name = re.sub('[\.\,]+',' ',name)
+	name = re.sub('[\.\,;]+',' ',name)
 
 	# only remove a dash if there is whitespace on
 	# at least one side of it
