@@ -188,7 +188,7 @@ def processFile(f,options):
 					return
 				else:
 					p('Found extra file to rename "%s"' % (i))
-					extensions.append(extension)
+					extensions.append(ext)
 
 	# take a copy of the original name
 	clean_name = old_name
