@@ -55,7 +55,7 @@ def search(movie, year=None):
 def gen_clean_name(name):
 	name = name.lower()
 
-	blacklist = ['720p','bluray','x264','dvdrip','LiMiTED','HDRip']
+	blacklist = ['720p','bluray','x264','dvdrip','LiMiTED','HDRip','unrated','brrip','XviD']
 	for i in blacklist:
 		i = i.lower()
 		if i in name:
