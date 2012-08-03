@@ -163,7 +163,7 @@ def processFile(f,options):
 	if directory == '':
 		directory = '.'
 
-	p('\nProcessing %s...' % basename)
+	p('\nProcessing %s...' % basename.encode("UTF-8"))
 
 	old_name, extension = os.path.splitext(basename)
 
