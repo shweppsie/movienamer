@@ -78,8 +78,8 @@ def gen_clean_name(name):
 
 	return name
 
-def get_date(old_name):
-	date = re.findall(r'((20|19)[0-9]{2})',old_name)
+def get_date(oldname):
+	date = re.findall(r'((20|19)[0-9]{2})',oldname)
 
 	dates = []
 	if len(date) == 1:
@@ -128,9 +128,9 @@ def prepare_name(name):
 
 	return name
 
-def rename(directory,old_name, newname, extensions):
+def rename(directory,oldname, newname, extensions):
 
-	if old_name == newname:
+	if oldname == newname:
 		p('New and old names match. No renaming required','green')
 		return
 
@@ -141,7 +141,7 @@ def rename(directory,old_name, newname, extensions):
 			return
 
 	for i in extensions:
-		old='%s.%s' % (old_name, i)
+		old='%s.%s' % (oldname, i)
 		new='%s.%s' % (newname, i.lower())
 		p("Renaming '%s' -> '%s'" % (old,new), 'green')
 		os.rename(os.path.join(directory,old),os.path.join(directory,new))
@@ -167,7 +167,7 @@ def processFile(f,options):
 
 	p('\nProcessing %s...' % basename.encode("UTF-8"))
 
-	old_name, ext = os.path.splitext(basename)
+	oldname, ext = os.path.splitext(basename)
 
 	# only process files known video extensions
 	ext = ext[1:]
@@ -184,7 +184,7 @@ def processFile(f,options):
 		if basename != i:
 			(name, ext) = os.path.splitext(i)
 			ext = ext[1:]
-			if name == old_name:
+			if name == oldname:
 				if ext in opt_extensions:
 					p('Error: multiple video files named "%s"!' % name, 'red')
 					return
@@ -193,14 +193,14 @@ def processFile(f,options):
 					extensions.append(ext)
 
 	# take a copy of the original name
-	clean_name = old_name
+	clean_name = oldname
 
 	# deal with release year
 	if options.search_year:
 		year = options.search_year
 		print "Using specified date: %s" % year
 	else:
-		year = get_date(old_name)
+		year = get_date(oldname)
 		if type(year) == type([]):
 			p("Error: Found multiple dates in filename! Use --search-year to provide the correct one", 'red')
 			return
@@ -226,10 +226,10 @@ def processFile(f,options):
 			results = search(clean_name)
 		# no results
 		if len(results) < 1:
-			p("No Results for %s!" % (old_name), 'red')
+			p("No Results for %s!" % (oldname), 'red')
 			return
 
-	if prepare_name(old_name) == build_name(results[0]['title'],results[0]['release_date'][:4]):
+	if prepare_name(oldname) == build_name(results[0]['title'],results[0]['release_date'][:4]):
 		p('First result matches current name, skipping renaming','green')
 		return
 
@@ -245,7 +245,7 @@ def processFile(f,options):
 		if not ('release_date' in res):
 			p('No release year for %s' % res['name'],'yellow')
 			return
-		rename(directory,old_name,build_name(res['title'],res['release_date'][:4]),extensions)
+		rename(directory,oldname,build_name(res['title'],res['release_date'][:4]),extensions)
 
 def main():
 	global searches
