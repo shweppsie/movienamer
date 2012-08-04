@@ -141,8 +141,10 @@ def rename(directory,old_name, newname, extensions):
 			return
 
 	for i in extensions:
-		p("Renaming '%s%s' -> '%s%s'" % (old_name,i,newname,i.lower()), 'green')
-		os.rename(os.path.join(directory,old_name+i),os.path.join(directory,newname+i.lower()))
+		old='%s.%s' % (old_name, i)
+		new='%s.%s' % (newname, i.lower())
+		p("Renaming '%s' -> '%s'" % (old,new), 'green')
+		os.rename(os.path.join(directory,old),os.path.join(directory,new))
 
 def processFile(f,options):
 	opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
@@ -165,17 +167,17 @@ def processFile(f,options):
 
 	p('\nProcessing %s...' % basename.encode("UTF-8"))
 
-	old_name, extension = os.path.splitext(basename)
+	old_name, ext = os.path.splitext(basename)
 
 	# only process files known video extensions
-	ext = extension[1:]
+	ext = ext[1:]
 	if ext.lower() not in opt_extensions:
 		p('Warning: Unknown extension "%s", ignoring' %f,'yellow')
 		return
 
 	# process any extra files
 	extensions = []
-	extensions.append(extension)
+	extensions.append(ext)
 	for i in os.listdir(directory):
 		i = unicode(i,'utf-8')
 		# ensure this isn't the file we're renaming
