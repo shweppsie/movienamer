@@ -63,7 +63,7 @@ def gen_clean_name(name):
 
 	# remove stuff after the first square bracket
 	name = re.sub(r'\[.*','',name)
-	name = splitter(name, ['(','[','www.'])[0]
+	name = splitter(name, ['(','[','{','www.'])[0]
 
 	# remove junk characters
 	name = re.sub('[\.\,;]+',' ',name)
