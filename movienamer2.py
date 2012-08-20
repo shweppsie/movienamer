@@ -20,11 +20,11 @@ def p(text, colour=None):
 	}
 	if colour != None:
 		sys.stdout.write('\033[1;%sm' % (colours[colour]))
-		sys.stdout.write(text)
+		sys.stdout.write(text.encode('utf-8'))
 		sys.stdout.write('\033[1;m')
 	else:
 		sys.stdout.write('\033[1;m')
-		sys.stdout.write(text)
+		sys.stdout.write(text.encode('utf-8'))
 	sys.stdout.write('\n')
 
 def search(movie, year=None):
