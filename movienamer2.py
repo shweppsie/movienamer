@@ -73,6 +73,7 @@ class Movienamer:
 		else:
 			return None
 
+	""" Eventually this function will produce custom filenames """
 	def build_name(self, name, year):
 		name = self.prepare_name(name)
 
@@ -80,7 +81,7 @@ class Movienamer:
 
 		return name
 
-	# remove chars from names the OSs can't handle
+	""" Remove characters from names that certain OSs can't handle """
 	def prepare_name(self, name):
 		# Windows: / ? < > \ : * | " ^
 		# MacOS: : /
