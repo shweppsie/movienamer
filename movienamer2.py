@@ -29,7 +29,7 @@ class Movienamer:
 					# doesn't support unicode :(
 					movie = movie.encode('utf-8')
 					res = tmdb.search(movie,year)
-					searches[index] = res
+					searches[index] = to_unicode(res)
 					return res
 				except Exception, e:
 					raise
@@ -131,7 +131,7 @@ class Movienamer:
 			p('\nError: Not a File "%s", ignoring' % f,'red')
 			return
 
-		f = unicode(f,'utf-8')
+		f = to_unicode(f)
 
 		basename = os.path.basename(f)
 		directory = os.path.dirname(f)
@@ -152,7 +152,7 @@ class Movienamer:
 		extensions = []
 		extensions.append(ext)
 		for i in os.listdir(directory):
-			i = unicode(i,'utf-8')
+			i = to_unicode(i)
 			# ensure this isn't the file we're renaming
 			if basename != i:
 				(name, ext) = os.path.splitext(i)
@@ -227,6 +227,11 @@ class Movienamer:
 			newname = build_name(title,date)
 			rename(directory, oldname, newname, extensions)
 
+def to_unicode(string):
+	if isinstance(string, basestring):
+		if not isinstance(string, unicode):
+			string = unicode(string, 'utf-8')
+	return string
 
 def p(text, colour=None):
 	colours = {
