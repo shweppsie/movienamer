@@ -25,8 +25,6 @@ class Movienamer:
 		else:
 			for i in xrange(attempts):
 				try:
-					# convert to ascii because tmdb
-					# doesn't support unicode :(
 					movie = movie.encode('utf-8')
 					res = tmdb.search(movie,year)
 					searches[index] = to_unicode(res)
