@@ -221,7 +221,12 @@ class Movienamer:
 			if not ('release_date' in res):
 				p('No release year for %s' % res['name'],'yellow')
 				return
-			self.rename(directory,oldname,self.build_name(res['title'],res['release_date'][:4]),extensions)
+
+			title = res['title']
+			date = res['release_date'][:4]
+			newname = build_name(title,date)
+			rename(directory, oldname, newname, extensions)
+
 
 def p(text, colour=None):
 	colours = {
