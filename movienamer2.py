@@ -344,8 +344,6 @@ def main():
         print "No config file found"
         config = None
 
-    movienamer = Movienamer(config)
-
     try:
 
         if args.recursive:
