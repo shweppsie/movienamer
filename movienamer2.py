@@ -119,7 +119,7 @@ class Movienamer:
 			p("Renaming '%s' -> '%s'" % (old,new), 'green')
 			os.rename(os.path.join(directory,old),os.path.join(directory,new))
 
-	def processFile(self, f,options):
+	def process_file(self, f, options):
 		opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
 
 		"""Return the guessed name of a movie file"""
@@ -295,10 +295,10 @@ def main():
 				if os.path.isdir(f):
 					for i in os.walk(f):
 						for j in sorted(i[2]):
-							movienamer.processFile(os.path.join(i[0],j),args)
+							movienamer.process_file(os.path.join(i[0],j),args)
 		else:
 			for f in files:
-				movienamer.processFile(f,args)
+				movienamer.process_file(f,args)
 	except KeyboardInterrupt, e:
 		pass
 	except Exception, e:
