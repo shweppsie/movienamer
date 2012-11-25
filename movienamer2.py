@@ -342,16 +342,23 @@ def main():
 	movienamer = Movienamer(config)
 
 	try:
-		files = args.Files
+
 		if args.recursive:
-			for f in files:
-				if os.path.isdir(f):
-					for i in os.walk(f):
-						for j in sorted(i[2]):
-							movienamer.process_file(os.path.join(i[0],j),args)
+			file_args = args.Files
+			files = []
+			for f in file_args:
+				if not os.path.isdir(f):
+					continue
+				for i in os.walk(f):
+					for j in sorted(i[2]):
+						p = os.path.join(i[0],j)
+						files.append(p)
 		else:
-			for f in files:
-				movienamer.process_file(f,args)
+			files = args.Files
+
+		movienamer = Movienamer(config)
+		for f in files:
+			movienamer.process_file(f,args)
 	except KeyboardInterrupt, e:
 		pass
 
