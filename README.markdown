@@ -15,13 +15,12 @@ program running.
 Loaded blacklist: 720p,1080p,bluray,x264,dvdrip,LiMiTED,HDRip,unrated,brrip,XviD,bdrip,eng,extended
 Loaded cache file: /home/nathan/.movienamer/searches.cache
 
-Processing The Bourne Legacy [multibits].mkv...
-Can't find release date in filename! '                     'Use --search-year to provide it
-Searching for "the bourne legacy"
+Processing The.Raid.Redemption.2011.BDRip.XviD-MeRCuRY.avi...
+Searching for "the raid redemption" with year 2011
 Using cached result
-	1 - The Bourne Legacy (2012) http://www.themoviedb.org/movie/49040
+	1 - The Raid: Redemption (2011) http://www.themoviedb.org/movie/94329
 	Result?: 1
-	Renaming 'The Bourne Legacy [multibits].mkv' -> 'The Bourne Legacy (2012).mkv'
+	Renaming 'The.Raid.Redemption.2011.BDRip.XviD-MeRCuRY.avi' -> 'The Raid, Redemption (2011).avi'
 ```
 
 # Installation #
