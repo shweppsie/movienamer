@@ -206,12 +206,15 @@ class Movienamer:
 			p('First result matches current name, skipping renaming','green')
 			return
 
-		for i in xrange(len(results)):
-			res = results[i]
+		for i, res in enumerate(results):
+			title = res['title']
+			date = res['release_date'][:4]
+			url = "http://www.themoviedb.org/movie/%s" % res['id']
 			if 'release_date' in res and res['release_date'] != None:
-				print "\t%d - %s (%s) http://www.themoviedb.org/movie/%s" % (i+1, res['title'], res['release_date'][:4], res['id'])
+				release_date = res['release_date'][:4]
+				print "\t%d - %s (%s) %s" % (i+1, title, release_date, url)
 			else:
-				print "\t%d - %s http://www.themoviedb.org/movie/%s" % (i+1, res['title'], res['id'])
+				print "\t%d - %s %s" % (i+1, title, url)
 		answer = raw_input("Result?: ")
 		if re.match('[1-9][0-9]*',answer):
 			res = results[int(answer)-1]
