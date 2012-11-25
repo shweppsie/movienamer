@@ -13,6 +13,7 @@ class Movienamer:
         blacklist = self.c('movienamer/blacklist')
         if blacklist:
             self.blacklist = blacklist
+            print "Loaded blacklist: %s" % ",".join(blacklist)
         else:
             self.blacklist = []
 
