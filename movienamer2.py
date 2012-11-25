@@ -204,7 +204,8 @@ class Movienamer:
 				ext = ext[1:]
 				if name == oldname:
 					if ext in self.filetypes:
-						p('Error: multiple video files named "%s"!' % name, 'red')
+						p('Error: multiple video files named "%s"!' % name,
+								'red')
 						return
 					if ext in self.othertypes:
 						p('Found extra file to rename "%s"' % (i))
@@ -220,10 +221,13 @@ class Movienamer:
 		else:
 			year = self.get_date(oldname)
 			if type(year) == type([]):
-				p("Error: Found multiple dates in filename! Use --search-year to provide the correct one", 'red')
+				p("Error: Found multiple dates in filename! ' \
+						'Use --search-year to provide the correct one",
+						'red')
 				return
 		if year == None:
-			print "Can't find release date in filename! Use --search-year to provide it"
+			print "Can't find release date in filename! ' \
+					'Use --search-year to provide it"
 		else:
 			# remove year from name for searching purposes
 			clean_name = clean_name.replace(year,'')
