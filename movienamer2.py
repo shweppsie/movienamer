@@ -274,8 +274,8 @@ class Movienamer:
 
             title = res['title']
             date = res['release_date'][:4]
-            newname = build_name(title,date)
-            rename(directory, oldname, newname, extensions)
+            newname = self.build_name(title,date)
+            self.rename(directory, oldname, newname, extensions)
 
 def to_unicode(string):
     if isinstance(string, basestring):
