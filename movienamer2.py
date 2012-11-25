@@ -4,13 +4,59 @@ import os,sys,time
 import re,pickle
 
 import tmdb
-
-
-searches = {}
+import yaml
 
 class Movienamer:
+	def __init__(self, config):
+		self.config = config
+
+		blacklist = self.c('movienamer/blacklist')
+		if blacklist:
+			self.blacklist = blacklist
+		else:
+			self.blacklist = []
+
+		filetypes = self.c('movienamer/filetypes')
+		if filetypes:
+			self.filetypes = filetypes
+		else:
+			self.filetypes = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
+
+		othertypes = self.c('movienamer/filetypes')
+		if othertypes:
+			self.othertypes = othertypes
+		else:
+			self.othertypes = ['srt']
+
+		if self.c('tmdb/cachefile'):
+			self.tmdb_cachefile = self.c('tmdb/cachefile')
+		else:
+			path = '~/.movienamer/searches.cache'
+			self.tmdb_cachefile = os.path.expanduser(path)
+
+		if os.path.exists(self.tmdb_cachefile):
+			self.tmdb_cache = pickle.load(open(self.tmdb_cachefile))
+			print "Loaded cache file: %s" % self.tmdb_cachefile
+		else:
+			self.tmdb_cache = {}
+
+	def c(self, key):
+		if not self.config:
+			return None
+
+		config = self.config
+		key = key.split('/')
+		try:
+			for i in key:
+				config = config[i]
+			return config
+		except:
+			return None
+
+	def save_cache(self):
+		pickle.dump(self.tmdb_cache, open(self.tmdb_cachefile,'w'))
+
 	def search(self, movie, year=None):
-		global searches
 		attempts = 3
 		backoff = 5
 
@@ -18,8 +64,8 @@ class Movienamer:
 			index = movie
 		else:
 			index = movie+year
-		if index in searches:
-			res = searches[index]
+		if index in self.tmdb_cache:
+			res = self.tmdb_cache[index]
 			print 'Using cached result'
 			return res
 		else:
@@ -27,19 +73,14 @@ class Movienamer:
 				try:
 					movie = movie.encode('utf-8')
 					res = tmdb.search(movie,year)
-					searches[index] = to_unicode(res)
+					self.tmdb_cache[index] = to_unicode(res)
+					self.save_cache()
 					return res
 				except Exception, e:
 					raise
 
 	def gen_clean_name(self, name):
 		name = name.lower()
-
-		blacklist = ['720p','1080p','bluray','x264','dvdrip','LiMiTED','HDRip','unrated','brrip','XviD','bdrip','eng','extended']
-		for i in blacklist:
-			i = i.lower()
-			if i in name:
-				name = name.partition(i)[0]
 
 		# remove stuff after the first square bracket
 		name = re.sub(r'\[.*','',name)
@@ -51,6 +92,13 @@ class Movienamer:
 		# only remove a dash if there is whitespace on
 		# at least one side of it
 		name = re.sub('( -|- )',' ',name)
+
+		# remove blaclisted words
+		for i in self.blacklist:
+			# the space ensures the term is not part of a word
+			i = " %s" % i.lower()
+			if i in name:
+				name = name.partition(i)[0]
 
 		# tidy up dulpicate spaces
 		name = re.sub(' +',' ',name)
@@ -119,8 +167,6 @@ class Movienamer:
 			os.rename(os.path.join(directory,old),os.path.join(directory,new))
 
 	def process_file(self, f, options):
-		opt_extensions = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
-
 		"""Return the guessed name of a movie file"""
 
 		if not os.path.exists(f):
@@ -143,8 +189,8 @@ class Movienamer:
 
 		# only process files known video extensions
 		ext = ext[1:]
-		if ext.lower() not in opt_extensions:
-			p('Warning: Unknown extension "%s", ignoring' %f,'yellow')
+		if ext.lower() not in self.filetypes:
+			p('Warning: Unknown extension "%s", ignoring' % f,'yellow')
 			return
 
 		# process any extra files
@@ -157,10 +203,10 @@ class Movienamer:
 				(name, ext) = os.path.splitext(i)
 				ext = ext[1:]
 				if name == oldname:
-					if ext in opt_extensions:
+					if ext in self.filetypes:
 						p('Error: multiple video files named "%s"!' % name, 'red')
 						return
-					else:
+					if ext in self.othertypes:
 						p('Found extra file to rename "%s"' % (i))
 						extensions.append(ext)
 
@@ -261,8 +307,6 @@ def splitter(word, separators):
 	return word
 
 def main():
-	global searches
-
 	import argparse
 	parser = argparse.ArgumentParser(description='Correctly Name Movie files')
 	parser.add_argument(
@@ -288,10 +332,15 @@ def main():
 		print "Do not use --year and --recursive"
 		exit(2)
 
-	movienamer = Movienamer()
+	config_path = os.path.expanduser('~/.movienamer/config.yaml')
+	if os.path.exists(config_path):
+		config = yaml.safe_load(open(config_path))
+	else:
+		print "No config file found"
+		config = None
 
-	if os.path.exists(os.path.expanduser('~/.movienamer.cache')):
-		searches = pickle.load(open(os.path.expanduser('~/.movienamer.cache'),'r'))
+	movienamer = Movienamer(config)
+
 	try:
 		files = args.Files
 		if args.recursive:
@@ -305,10 +354,6 @@ def main():
 				movienamer.process_file(f,args)
 	except KeyboardInterrupt, e:
 		pass
-	except Exception, e:
-		pickle.dump(searches, open(os.path.expanduser('~/.movienamer.cache'),'w'))
-		raise
-	pickle.dump(searches, open(os.path.expanduser('~/.movienamer.cache'),'w'))
 
 if __name__ == "__main__":
 	main()
