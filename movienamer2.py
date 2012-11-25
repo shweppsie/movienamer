@@ -222,13 +222,13 @@ class Movienamer:
         else:
             year = self.get_date(oldname)
             if type(year) == type([]):
-                p("Error: Found multiple dates in filename! ' \
-                        'Use --search-year to provide the correct one",
+                p('Error: Found multiple dates in filename! ' \
+                        'Use --search-year to provide the correct one',
                         'red')
                 return
         if year == None:
-            print "Can't find release date in filename! ' \
-                    'Use --search-year to provide it"
+            print 'Can\'t find release date in filename! ' \
+                    'Use --search-year to provide it'
         else:
             # remove year from name for searching purposes
             clean_name = clean_name.replace(year,'')
@@ -239,7 +239,7 @@ class Movienamer:
         if year != None:
             print 'Searching for "%s" with year %s' % (clean_name, year)
         else:
-            print 'Searching for "%s" ' % (clean_name)
+            print 'Searching for "%s"' % (clean_name)
         results = self.search(clean_name,year)
 
         if len(results) < 1:
