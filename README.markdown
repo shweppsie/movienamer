@@ -4,10 +4,11 @@
 
 Author: Nathan Overall
 
-Movienamer does exactly as it's name infers. Given the name of any movie file,
-movienamer will try to find the most likely movie and rename the file.
+Movienamer does exactly as it's name implies. Given the name of any movie file,
+Movienamer will try to find the most likely movie and rename the file.
 
 # Operation #
+
 At this point the program is very much interactive. Below is an example of the
 program running.
 
@@ -24,9 +25,18 @@ Using cached result
 ```
 
 # Installation #
-MovieNamer2 requires Python and themoviedb to run.
-Install themoviedb from [here](https://github.com/doganaydin/themoviedb).
+
+Download [Movienamer](https://github.com/shweppsie/movienamer/archive/master.zip)
+
+MovieNamer requires Python to run. Installing python is very platform specific, therefore you will need to check your platforms documenation for instructions on installing python.
+
+Movienamer also uses PyYAML and themoviedb libraries.
+
+The easiest way to install the libraries is using pip
+
+       pip install PyYAML
+       pip install themoviedb
+
 Then run
 
 	./movienamer2 --help
-
