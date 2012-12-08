@@ -55,6 +55,9 @@ class Movienamer:
             return None
 
     def save_cache(self):
+        folder = os.path.dirname(self.tmdb_cachefile)
+        if not os.path.isdir(folder):
+            os.makedirs(folder)
         pickle.dump(self.tmdb_cache, open(self.tmdb_cachefile,'w'))
 
     def search(self, movie, year=None):
