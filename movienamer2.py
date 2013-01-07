@@ -23,7 +23,7 @@ class Movienamer:
         else:
             self.filetypes = ['avi','mp4','mkv','m4v','mpg','mpeg','iso','ogm']
 
-        othertypes = self.c('movienamer/filetypes')
+        othertypes = self.c('movienamer/othertypes')
         if othertypes:
             self.othertypes = othertypes
         else:
