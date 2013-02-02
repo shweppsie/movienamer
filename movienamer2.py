@@ -124,10 +124,11 @@ class Movienamer:
             return None
 
     """ Eventually this function will produce custom filenames """
-    def build_name(self, name, year):
+    def build_name(self, name, year=None):
         name = self.prepare_name(name)
 
-        name = "%s (%s)" % (name, year)
+        if year != None:
+            name = "%s (%s)" % (name, year)
 
         return name
 
@@ -261,13 +262,12 @@ class Movienamer:
 
         for i, res in enumerate(results):
             title = res['title']
-            date = res['release_date'][:4]
             url = "http://www.themoviedb.org/movie/%s" % res['id']
             if 'release_date' in res and res['release_date'] != None:
                 release_date = res['release_date'][:4]
-                print "\t%d - %s (%s) %s" % (i+1, title, release_date, url)
+                print "\t%d - %s (%s): %s" % (i+1, title, release_date, url)
             else:
-                print "\t%d - %s %s" % (i+1, title, url)
+                print "\t%d - %s: %s" % (i+1, title, url)
         answer = raw_input("Result?: ")
         if re.match('[1-9][0-9]*',answer):
             res = results[int(answer)-1]
@@ -276,7 +276,10 @@ class Movienamer:
                 return
 
             title = res['title']
-            date = res['release_date'][:4]
+            if 'release_date' in res:
+                date = res['release_date'][:4]
+            else:
+                date = None
             newname = self.build_name(title,date)
             self.rename(directory, oldname, newname, extensions)
 
