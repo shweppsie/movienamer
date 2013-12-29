@@ -4,10 +4,9 @@ import os,sys,time
 import re,pickle
 
 import tmdb
-import yaml
 
 class Movienamer:
-    def __init__(self, config):
+    def __init__(self, config=None):
         self.config = config
 
         newdir = self.c('movienamer/move-to')
@@ -340,6 +339,14 @@ def splitter(word, separators):
     return word
 
 def main():
+    import yaml
+    config_path = os.path.expanduser('~/.movienamer/config.yaml')
+    if os.path.exists(config_path):
+        config = yaml.safe_load(open(config_path))
+    else:
+        print "No config file found"
+        config = None
+
     import argparse
     parser = argparse.ArgumentParser(description='Correctly Name Movie files')
     parser.add_argument(
@@ -370,13 +377,6 @@ def main():
     if args.recursive and args.search_year:
         print "Do not use --year and --recursive"
         exit(2)
-
-    config_path = os.path.expanduser('~/.movienamer/config.yaml')
-    if os.path.exists(config_path):
-        config = yaml.safe_load(open(config_path))
-    else:
-        print "No config file found"
-        config = None
 
     try:
 
