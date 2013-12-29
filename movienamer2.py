@@ -10,6 +10,13 @@ class Movienamer:
     def __init__(self, config):
         self.config = config
 
+        newdir = self.c('movienamer/move-to')
+        if newdir:
+            self.newdir = newdir
+            print "Moving renamed files to %s" % newdir
+        else:
+            self.newdir = None
+
         blacklist = self.c('movienamer/blacklist')
         if blacklist:
             self.blacklist = blacklist
@@ -153,15 +160,17 @@ class Movienamer:
 
         return name
 
-    def rename(self, directory, oldname, newname, extensions):
+    def rename(self, olddir, oldname, newname, extensions, newdir=""):
+        if newdir == "":
+            newdir = olddir
 
-        if oldname == newname:
+        if oldname == newname and olddir == newdir:
             p('New and old names match. No renaming required','green')
             return
 
         for i in extensions:
             filename = newname+i.lower()
-            if os.path.exists(os.path.join(directory, filename)):
+            if os.path.exists(os.path.join(newdir, filename)):
                 p('Error: Rename will overwrite file "%s"!' % filename, 'red')
                 return
 
@@ -169,10 +178,13 @@ class Movienamer:
             old='%s.%s' % (oldname, i)
             new='%s.%s' % (newname, i.lower())
             p("Renaming '%s' -> '%s'" % (old,new), 'green')
-            os.rename(os.path.join(directory,old),os.path.join(directory,new))
+            os.rename(os.path.join(olddir,old),os.path.join(newdir,new))
 
-    def process_file(self, f, options):
+    def process_file(self, f, newdir=None, search_year=None):
         """Return the guessed name of a movie file"""
+
+        if newdir:
+            print "Moving renamed files to %s" % newdir
 
         if not os.path.exists(f):
             p('\nError: File does not exist "%s"' %f,'red')
@@ -220,8 +232,8 @@ class Movienamer:
         clean_name = oldname
 
         # deal with release year
-        if options.search_year:
-            year = options.search_year
+        if search_year:
+            year = search_year
             print "Using specified date: %s" % year
         else:
             year = self.get_date(oldname)
@@ -256,7 +268,10 @@ class Movienamer:
                 p("No Results for %s!" % (oldname), 'red')
                 return
 
-        if self.prepare_name(oldname) == self.build_name(results[0]['title'],results[0]['release_date'][:4]):
+        if self.newdir == None \
+                and newdir == None \
+                and self.prepare_name(oldname) == self.build_name( \
+                results[0]['title'],results[0]['release_date'][:4]):
             p('First result matches current name, skipping renaming','green')
             return
 
@@ -281,7 +296,14 @@ class Movienamer:
             else:
                 date = None
             newname = self.build_name(title,date)
-            self.rename(directory, oldname, newname, extensions)
+            if newdir != None:
+                self.rename(directory, oldname, newname, \
+                        extensions, newdir)
+            elif self.newdir != None:
+                self.rename(directory, oldname, newname, \
+                        extensions, self.newdir)
+            else:
+                self.rename(directory, oldname, newname, extensions)
 
 def to_unicode(string):
     if isinstance(string, basestring):
@@ -332,6 +354,12 @@ def main():
             help="Year to use when searching for result",
             )
     parser.add_argument(
+            '--move-to',
+            dest='move_to',
+            action='store',
+            help="Directory to move renamed files to",
+            )
+    parser.add_argument(
             'Files',
             metavar='FILE',
             nargs='+',
@@ -367,7 +395,7 @@ def main():
 
         movienamer = Movienamer(config)
         for f in files:
-            movienamer.process_file(f,args)
+            movienamer.process_file(f,args.move_to,args.search_year)
     except KeyboardInterrupt, e:
         pass
 
