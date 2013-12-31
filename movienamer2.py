@@ -168,8 +168,7 @@ class Movienamer:
             return
 
         for i in extensions:
-            filename = newname+i.lower()
-            # TODO: this doesn't work
+            filename = "%s.%s" % (newname,i.lower())
             if os.path.exists(os.path.join(newdir, filename)):
                 p('Error: Rename will overwrite file "%s"!' % filename, 'red')
                 return
