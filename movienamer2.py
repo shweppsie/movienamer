@@ -10,6 +10,8 @@ class Filename:
         if ext and not name:
             raise Exception("Cannot use ext without name")
         if ext and name:
+            if ext.startswith('.'):
+                ext = ext[1:]
             name = "%s.%s" % (name, ext)
         if name:
             self.set_path(os.path.join(path, name))
