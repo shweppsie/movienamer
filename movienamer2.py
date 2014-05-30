@@ -352,7 +352,7 @@ class Movienamer:
                 results = self.search(clean_name)
             # no results
             if len(results) < 1:
-                p("No Results for %s!" % (oldname), 'red')
+                p("No Results for %s!" % (filename), 'red')
                 return
 
         if self.newdir == None \
