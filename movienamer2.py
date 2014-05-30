@@ -311,7 +311,7 @@ class Movienamer:
                         p('Error: multiple video files named "%s"!' % name,
                                 'red')
                         return
-                    if new.get_name_ext() in self.othertypes:
+                    if new.get_name_ext(False) in self.othertypes:
                         p('Found extra file to rename "%s"' % (i))
                         extensions.append(new.get_name_ext())
 
