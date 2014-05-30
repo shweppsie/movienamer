@@ -16,6 +16,9 @@ class Filename:
         else:
             self.set_path(path)
 
+    def __str__(self):
+        return self._name.encode("UTF-8")
+
     def set_path(self, path):
         path = to_unicode(path)
 
