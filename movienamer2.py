@@ -241,6 +241,23 @@ class Movienamer:
                 p('Remove original to continue' % filename, 'red')
                 return
 
+        # check for duplicate video files
+        f = []
+        for i in os.listdir(newfile.get_full_dir()):
+            i = Filename(newfile.get_full_dir(), i)
+            # check names match (excl extension) and file type is video
+            if i.get_name_name() == newfile.get_name_name() \
+                    and i.get_name_ext(False) in self.filetypes:
+                f.append(i)
+        if len(f) > 0:
+            p('Error: Rename will add duplicate file', 'red')
+            p('File: %s (%s)' % (oldfile.get_path(), oldfile.get_human_size()))
+            p('Duplicates', 'red')
+            for i in f:
+                p("%s (%s)" % (i.get_name(),i.get_human_size()))
+            p('Remove duplicates to continue', 'red')
+            return
+
         # rename files
         extensions.append(newfile.get_name_ext())
         for i in extensions:
