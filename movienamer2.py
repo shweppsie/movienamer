@@ -6,7 +6,11 @@ import re,pickle
 import tmdb
 
 class Filename:
-    def __init__(self, path, name=None):
+    def __init__(self, path, name=None, ext=None):
+        if ext and not name:
+            raise Exception("Cannot use ext without name")
+        if ext and name:
+            name = "%s.%s" % (name, ext)
         if name:
             self.set_path(os.path.join(path, name))
         else:
@@ -221,25 +225,25 @@ class Movienamer:
 
         return name
 
-    def rename(self, olddir, oldname, newname, extensions, newdir=""):
-        if newdir == "":
-            newdir = olddir
-
-        if oldname == newname and olddir == newdir:
+    def rename(self, oldfile, newfile, extensions):
+        if oldfile.get_full_path() == newfile.get_full_path():
             p('New and old names match. No renaming required','green')
             return
 
+        # don't overwrite existing files
         for i in extensions:
-            filename = "%s.%s" % (newname,i.lower())
-            if os.path.exists(os.path.join(newdir, filename)):
-                p('Error: Rename will overwrite file "%s"!' % filename, 'red')
+            f = Filename("%s.%s" % (newname.get_name_name(),i)
+            if os.path.exists(f.get_full_path()):
+                p('Error: Rename will overwrite file "%s"!','red')
+                p('Remove original to continue' % filename, 'red')
                 return
 
         for i in extensions:
-            old='%s.%s' % (oldname, i)
-            new='%s.%s' % (newname, i.lower())
-            p("Renaming '%s' -> '%s'" % (old,new), 'green')
-            os.rename(os.path.join(olddir,old),os.path.join(newdir,new))
+            p("Renaming '%s' -> '%s'" % \
+                    (oldfile.get_name(),newfile.get_name()), 'green')
+            print oldfile.get_full_path()
+            print newfile.get_full_path()
+            #os.rename(os.path.join(olddir,old),os.path.join(newdir,new))
 
     def process_file(self, f, newdir=None, search_year=None):
         """Return the guessed name of a movie file"""
@@ -254,50 +258,41 @@ class Movienamer:
             p('\nError: Not a File "%s", ignoring' % f,'red')
             return
 
-        f = to_unicode(f)
+        filename = Filename(f)
 
-        basename = os.path.basename(f)
-        directory = os.path.dirname(f)
-        if directory == '':
-            directory = '.'
-
-        p('\nProcessing %s...' % basename.encode("UTF-8"))
-
-        oldname, ext = os.path.splitext(basename)
+        p('\nProcessing "%s"...' % filename.get_name())
 
         # only process files known video extensions
-        ext = ext[1:]
+        ext = filename.get_name_ext(False)
         if ext.lower() not in self.filetypes:
             p('Warning: Unknown extension "%s", ignoring' % f,'yellow')
             return
 
         # process any extra files
         extensions = []
-        extensions.append(ext)
-        for i in os.listdir(directory):
+        for i in os.listdir(filename.get_full_dir()):
             i = to_unicode(i)
             # ensure this isn't the file we're renaming
-            if basename != i:
-                (name, ext) = os.path.splitext(i)
-                ext = ext[1:]
-                if name == oldname:
-                    if ext in self.filetypes:
+            if filename.get_name() != i:
+                new = Filename(i)
+                if new.get_name_name() == filename.get_name_name():
+                    if new.get_name_ext(False) in self.filetypes:
                         p('Error: multiple video files named "%s"!' % name,
                                 'red')
                         return
-                    if ext in self.othertypes:
+                    if new.get_name_ext() in self.othertypes:
                         p('Found extra file to rename "%s"' % (i))
-                        extensions.append(ext)
+                        extensions.append(new.get_name_ext())
 
         # take a copy of the original name
-        clean_name = oldname
+        clean_name = filename.get_name_name()
 
         # deal with release year
         if search_year:
             year = search_year
             print "Using specified date: %s" % year
         else:
-            year = self.get_date(oldname)
+            year = self.get_date(filename.get_name_name())
             if type(year) == type([]):
                 p('Error: Found multiple dates in filename! ' \
                         'Use --search-year to provide the correct one',
@@ -356,15 +351,15 @@ class Movienamer:
                 date = res['release_date'][:4]
             else:
                 date = None
-            newname = self.build_name(title,date)
+            newname = "%s%s" % \
+                (self.build_name(title,date), filename.get_name_ext())
             if newdir != None:
-                self.rename(directory, oldname, newname, \
-                        extensions, newdir)
+                newfile = Filename(os.path.join(newdir, newname))
             elif self.newdir != None:
-                self.rename(directory, oldname, newname, \
-                        extensions, self.newdir)
+                newfile = Filename(os.path.join(self.newdir, newname))
             else:
-                self.rename(directory, oldname, newname, extensions)
+                newfile = Filename(os.path.join(filename.get_path(), newname))
+            self.rename(filename, newfile, extensions)
 
 def to_unicode(string):
     if isinstance(string, basestring):
