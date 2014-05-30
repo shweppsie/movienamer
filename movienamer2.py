@@ -235,18 +235,23 @@ class Movienamer:
 
         # don't overwrite existing files
         for i in extensions:
-            f = Filename("%s.%s" % (newname.get_name_name(),i)
+            f = Filename("%s.%s" % (newname.get_name_name(),i))
             if os.path.exists(f.get_full_path()):
                 p('Error: Rename will overwrite file "%s"!','red')
                 p('Remove original to continue' % filename, 'red')
                 return
 
+        # rename files
+        extensions.append(newfile.get_name_ext())
         for i in extensions:
-            p("Renaming '%s' -> '%s'" % \
-                    (oldfile.get_name(),newfile.get_name()), 'green')
-            print oldfile.get_full_path()
-            print newfile.get_full_path()
-            #os.rename(os.path.join(olddir,old),os.path.join(newdir,new))
+            newname = Filename( \
+                    newfile.get_full_dir(), \
+                    newfile.get_name_name(), \
+                    i \
+            )
+            p("Renaming '%s' -> '%s'" % (oldfile,newname), 'green')
+            print newname.get_full_path()
+            #os.rename(oldfile.get_full_path(),newfile.get_full_path())
 
     def process_file(self, f, newdir=None, search_year=None):
         """Return the guessed name of a movie file"""
@@ -263,7 +268,7 @@ class Movienamer:
 
         filename = Filename(f)
 
-        p('\nProcessing "%s"...' % filename.get_name())
+        p('\nProcessing "%s"...' % filename)
 
         # only process files known video extensions
         ext = filename.get_name_ext(False)
