@@ -5,6 +5,68 @@ import re,pickle
 
 import tmdb
 
+class Filename:
+    def __init__(self, path, name=None):
+        if name:
+            self.set_path(os.path.join(path, name))
+        else:
+            self.set_path(path)
+
+    def set_path(self, path):
+        path = to_unicode(path)
+
+        self.set_dir(os.path.dirname(path))
+        self.set_name(os.path.basename(path))
+
+    def set_dir(self, directory):
+        directory = to_unicode(directory)
+        if directory == "":
+            directory = "."
+        self._dir = directory
+
+        fulldir = self._dir
+        fulldir = os.path.expanduser(fulldir)
+        fulldir = os.path.abspath(fulldir)
+        self._fulldir = fulldir
+
+    def set_name(self, name):
+        name = to_unicode(name)
+        self._name_name, ext = os.path.splitext(name)
+        self._name_ext = ext.lower()
+        self._name = "%s%s" % (self._name_name, self._name_ext)
+
+    def get_dir(self):
+        return self._dir
+
+    def get_path(self):
+        return os.path.join(self._dir, self._name)
+
+    def get_full_path(self):
+        return os.path.join(self._fulldir, self._name)
+
+    def get_full_dir(self):
+        return self._fulldir
+
+    def get_name(self):
+        return self._name
+
+    def get_name_name(self):
+        return self._name_name
+
+    def get_name_ext(self, with_dot=True):
+        if not with_dot:
+            return self._name_ext[1:]
+        else:
+            return self._name_ext
+
+    def get_human_size(self):
+        num = os.path.getsize(self.get_full_path())
+        for x in ['bytes','KB','MB','GB']:
+            if num < 1024.0 and num > -1024.0:
+                return "%3.1f%s" % (num, x)
+            num /= 1024.0
+        return "%3.1f%s" % (num, 'TB')
+
 class Movienamer:
     def __init__(self, config=None):
         self.config = config
