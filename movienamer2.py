@@ -268,8 +268,13 @@ class Movienamer:
                     newfile.get_name_name(), \
                     i \
             )
-            p("Renaming '%s' -> '%s'" % (oldfile,newname), 'green')
-            os.rename(oldfile.get_full_path(),newfile.get_full_path())
+            oldname = Filename( \
+                    oldfile.get_full_dir(), \
+                    oldfile.get_name_name(), \
+                    i \
+            )
+            p("Renaming '%s' -> '%s'" % (oldname,newname), 'green')
+            os.rename(oldname.get_full_path(),newname.get_full_path())
 
     def process_file(self, f, newdir=None, search_year=None):
         """Return the guessed name of a movie file"""
