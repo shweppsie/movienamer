@@ -104,7 +104,7 @@ class Movienamer:
         if othertypes:
             self.othertypes = othertypes
         else:
-            self.othertypes = ['srt']
+            self.othertypes = ['srt','idx','sub']
 
         if self.c('tmdb/cachefile'):
             self.tmdb_cachefile = self.c('tmdb/cachefile')
