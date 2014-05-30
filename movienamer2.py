@@ -237,7 +237,7 @@ class Movienamer:
 
         # don't overwrite existing files
         for i in extensions:
-            f = Filename("%s.%s" % (newname.get_name_name(),i))
+            f = Filename(oldfile.get_full_path(), newfile.get_name_name(), i)
             if os.path.exists(f.get_full_path()):
                 p('Error: Rename will overwrite file "%s"!','red')
                 p('Remove original to continue' % filename, 'red')
