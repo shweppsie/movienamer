@@ -355,13 +355,6 @@ class Movienamer:
                 p("No Results for %s!" % (filename), 'red')
                 return
 
-        if self.newdir == None \
-                and newdir == None \
-                and self.prepare_name(oldname) == self.build_name( \
-                results[0]['title'],results[0]['release_date'][:4]):
-            p('First result matches current name, skipping renaming','green')
-            return
-
         for i, res in enumerate(results):
             title = res['title']
             url = "http://www.themoviedb.org/movie/%s" % res['id']
